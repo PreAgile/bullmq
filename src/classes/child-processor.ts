@@ -266,6 +266,25 @@ export class ChildProcessor {
           'getIgnoredChildrenFailures',
         );
       },
+
+      /**
+       * Proxy `getDependencies` function.
+       */
+      getDependencies: async (opts?: Record<string, any>) => {
+        const requestId = Math.random().toString(36).substring(2, 15);
+        await send({
+          requestId,
+          cmd: ParentCommand.GetDependencies,
+          value: opts,
+        });
+
+        return waitResponse(
+          requestId,
+          this.receiver,
+          RESPONSE_TIMEOUT,
+          'getDependencies',
+        );
+      },
     };
 
     return wrappedJob;
